@@ -41,8 +41,8 @@ Void Heart 是 Astro 靜態網站，正式網站透過 GitHub Actions 部署到 
 `astro.config.mjs` 會讀取 `SITE_URL` 與 `BASE_PATH`：
 
 ```js
-const site = process.env.SITE_URL ?? "https://sihle.github.io";
-const base = process.env.BASE_PATH ?? "/github-pages-spec-md";
+const site = process.env.SITE_URL ?? "https://bugbug777.github.io";
+const base = process.env.BASE_PATH ?? "/voidheart";
 ```
 
 在 GitHub Pages 專案頁模式中：
@@ -69,7 +69,7 @@ BASE_PATH=/<repository-name>
    - Name：`BASE_PATH`
    - Value：`/<repository-name>`
 
-依目前專案名稱，預設 `BASE_PATH` 是 `/github-pages-spec-md`。
+依目前 GitHub repository 名稱，預設 `BASE_PATH` 是 `/voidheart`。
 
 ## 4. 本機部署前檢查
 
@@ -207,7 +207,26 @@ DNS：
 - 瀏覽器是否快取舊頁面。
 - GitHub Pages 是否仍在處理最新部署。
 
-### 8.4 網址、RSS 或 sitemap 不正確
+### 8.4 GitHub Actions 在 Setup Pages 失敗
+
+若 `actions/configure-pages` 出現以下錯誤：
+
+```text
+HttpError: Not Found
+Get Pages site failed. Please verify that the repository has Pages enabled and configured to build using GitHub Actions.
+```
+
+通常代表 GitHub repository 還沒有啟用 Pages，或 Pages source 尚未設定為 GitHub Actions。
+
+處理方式：
+
+1. 到 GitHub repository 頁面。
+2. 進入 `Settings > Pages`。
+3. 在 `Build and deployment` 區塊中，將 `Source` 設為 `GitHub Actions`。
+4. 儲存設定。
+5. 回到 `Actions`，重新執行 `Deploy to GitHub Pages` workflow，或重新推送一次 commit。
+
+### 8.5 網址、RSS 或 sitemap 不正確
 
 檢查：
 
@@ -217,7 +236,7 @@ DNS：
 - 若日後改用自訂網域，自訂網域是否包含 `https://`。
 - 若日後改用自訂網域，GitHub Pages 的 custom domain 是否與 `SITE_URL` 一致。
 
-### 8.5 自訂網域無法開啟
+### 8.6 自訂網域無法開啟
 
 檢查：
 
@@ -227,7 +246,7 @@ DNS：
 - `SITE_URL` 是否與正式網域一致。
 - Astro `site` 設定收到的網址是否與網域一致。
 
-### 8.6 草稿文章出現在正式網站
+### 8.7 草稿文章出現在正式網站
 
 檢查文章 frontmatter：
 
