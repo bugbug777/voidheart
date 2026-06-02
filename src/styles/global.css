@@ -328,6 +328,7 @@ textarea {
   color: var(--text);
   padding: 7px 10px;
   font-size: 0.9rem;
+  line-height: 1.2;
   text-decoration: none;
 }
 
