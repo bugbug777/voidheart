@@ -306,6 +306,11 @@ textarea {
   font-size: 0.92rem;
 }
 
+.post-card .post-meta {
+  align-items: baseline;
+  line-height: 1.4;
+}
+
 .tag-list {
   display: flex;
   flex-wrap: wrap;
