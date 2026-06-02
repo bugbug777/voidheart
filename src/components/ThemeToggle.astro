@@ -1,0 +1,26 @@
+<button class="theme-toggle" type="button" aria-label="切換深色與淺色模式" data-theme-toggle>
+  <span class="theme-toggle__icon" aria-hidden="true">◐</span>
+</button>
+
+<script>
+  const button = document.querySelector("[data-theme-toggle]");
+  const icon = button?.querySelector(".theme-toggle__icon");
+
+  function setTheme(theme: "light" | "dark") {
+    document.documentElement.dataset.theme = theme;
+    localStorage.setItem("theme", theme);
+    if (icon) {
+      icon.textContent = theme === "dark" ? "○" : "●";
+    }
+  }
+
+  const currentTheme =
+    document.documentElement.dataset.theme === "dark" ? "dark" : "light";
+  setTheme(currentTheme);
+
+  button?.addEventListener("click", () => {
+    const nextTheme =
+      document.documentElement.dataset.theme === "dark" ? "light" : "dark";
+    setTheme(nextTheme);
+  });
+</script>

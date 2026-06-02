@@ -1,0 +1,45 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PostCard from "../components/PostCard.astro";
+import { getPublishedPosts } from "../utils/blog";
+import { withBase } from "../utils/urls";
+
+const posts = await getPublishedPosts();
+const latestPosts = posts.slice(0, 3);
+---
+
+<BaseLayout>
+  <section class="site-shell hero">
+    <div>
+      <p class="eyebrow">sihle 的個人部落格</p>
+      <h1>Void Heart</h1>
+      <p class="hero__copy">
+        寫下技術筆記、閱讀片段、生活觀察，以及那些還沒有完全定形但值得留下的想法。
+      </p>
+    </div>
+    <dl class="signal-panel" aria-label="部落格資訊">
+      <div class="signal-panel__row">
+        <dt>語言</dt>
+        <dd>繁體中文</dd>
+      </div>
+      <div class="signal-panel__row">
+        <dt>作者</dt>
+        <dd>sihle</dd>
+      </div>
+      <div class="signal-panel__row">
+        <dt>模式</dt>
+        <dd>淺色 / 深色</dd>
+      </div>
+    </dl>
+  </section>
+
+  <section class="site-shell section" aria-labelledby="latest-posts">
+    <div class="section__header">
+      <h2 id="latest-posts">最新文章</h2>
+      <a href={withBase("/blog/")}>查看全部</a>
+    </div>
+    <div class="post-list">
+      {latestPosts.map((post) => <PostCard post={post} headingLevel="h3" />)}
+    </div>
+  </section>
+</BaseLayout>

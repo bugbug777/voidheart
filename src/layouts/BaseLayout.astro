@@ -1,0 +1,46 @@
+---
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import ThemeScript from "../components/ThemeScript.astro";
+import { SITE } from "../site.config";
+import { withBase, withoutBase } from "../utils/urls";
+import "../styles/global.css";
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const pageTitle = Astro.props.title
+  ? `${Astro.props.title} | ${SITE.title}`
+  : SITE.title;
+const description = Astro.props.description ?? SITE.description;
+const canonicalUrl = new URL(withBase(withoutBase(Astro.url.pathname)), Astro.site).href;
+---
+
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <ThemeScript />
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="zh_TW" />
+    <meta property="og:site_name" content={SITE.title} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta name="theme-color" content="#111111" />
+    <link rel="canonical" href={canonicalUrl} />
+    <link rel="alternate" type="application/rss+xml" title={SITE.title} href={withBase("/rss.xml")} />
+  </head>
+  <body>
+    <Header />
+    <main class="page-main">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

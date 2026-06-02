@@ -1,0 +1,37 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+import { formatDate, getReadingTime } from "../utils/blog";
+import { withBase } from "../utils/urls";
+
+interface Props {
+  title: string;
+  description: string;
+  pubDate: Date;
+  updatedDate?: Date;
+  tags: string[];
+  body: string;
+}
+
+const { title, description, pubDate, updatedDate, tags, body } = Astro.props;
+---
+
+<BaseLayout title={title} description={description}>
+  <article class="content-shell">
+    <header class="article-header">
+      <p class="eyebrow">Void Heart / Article</p>
+      <h1>{title}</h1>
+      <p class="article-description">{description}</p>
+      <div class="post-meta">
+        <time datetime={pubDate.toISOString()}>{formatDate(pubDate)}</time>
+        {updatedDate && <span>更新於 {formatDate(updatedDate)}</span>}
+        <span>{getReadingTime(body)}</span>
+      </div>
+      <ul class="tag-list" aria-label="文章標籤">
+        {tags.map((tag) => <li><a class="tag" href={withBase(`/tags/${tag}/`)}>#{tag}</a></li>)}
+      </ul>
+    </header>
+    <div class="prose">
+      <slot />
+    </div>
+  </article>
+</BaseLayout>

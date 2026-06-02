@@ -1,0 +1,29 @@
+---
+import type { BlogPost } from "../utils/blog";
+import { formatDate, getReadingTime } from "../utils/blog";
+import { withBase } from "../utils/urls";
+
+interface Props {
+  post: BlogPost;
+  headingLevel?: "h2" | "h3";
+}
+
+const { post, headingLevel = "h2" } = Astro.props;
+const Heading = headingLevel;
+---
+
+<article class="post-card">
+  <a href={withBase(`/blog/${post.slug}/`)}>
+    <Heading>{post.data.title}</Heading>
+    <p>{post.data.description}</p>
+    <div class="post-meta">
+      <time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate)}</time>
+      <span>{getReadingTime(post.body)}</span>
+      {
+        post.data.tags.map((tag) => (
+          <span aria-label={`標籤 ${tag}`}>#{tag}</span>
+        ))
+      }
+    </div>
+  </a>
+</article>

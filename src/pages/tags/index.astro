@@ -1,0 +1,29 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getAllTags, getPublishedPosts } from "../../utils/blog";
+import { withBase } from "../../utils/urls";
+
+const posts = await getPublishedPosts();
+const tags = getAllTags(posts);
+---
+
+<BaseLayout title="標籤" description="依標籤瀏覽 Void Heart 的文章。">
+  <section class="content-shell">
+    <p class="eyebrow">Tags</p>
+    <h1 class="page-title">標籤</h1>
+    <p class="hero__copy">用主題重新進入文章。</p>
+  </section>
+  <section class="content-shell section" aria-label="標籤列表">
+    <ul class="tag-list">
+      {
+        tags.map((tag) => (
+          <li>
+            <a class="tag" href={withBase(`/tags/${tag}/`)}>
+              #{tag}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+</BaseLayout>

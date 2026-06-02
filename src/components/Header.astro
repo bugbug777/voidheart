@@ -1,0 +1,32 @@
+---
+import ThemeToggle from "./ThemeToggle.astro";
+import { NAV_ITEMS, SITE } from "../site.config";
+import { withBase, withoutBase } from "../utils/urls";
+
+const currentPath = withoutBase(Astro.url.pathname);
+---
+
+<header class="site-header">
+  <div class="site-shell site-header__inner">
+    <a class="brand" href={withBase("/")} aria-label={`${SITE.title} 首頁`}>
+      <span class="brand__mark" aria-hidden="true">VH</span>
+      <span>{SITE.title}</span>
+    </a>
+    <nav class="nav" aria-label="主要導覽">
+      {
+        NAV_ITEMS.map((item) => {
+          const isCurrent =
+            item.href === "/"
+              ? currentPath === "/"
+              : currentPath.startsWith(item.href);
+          return (
+            <a href={withBase(item.href)} aria-current={isCurrent ? "page" : undefined}>
+              {item.label}
+            </a>
+          );
+        })
+      }
+      <ThemeToggle />
+    </nav>
+  </div>
+</header>
