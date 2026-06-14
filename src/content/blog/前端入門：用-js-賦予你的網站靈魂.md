@@ -2,6 +2,11 @@
 title: 前端入門：用 JS 賦予你的網站靈魂
 pubDate: 2026-06-09T22:43:43.732Z
 description: 用 HTML 打造地基，用 CSS 裝飾網站，用 JS 賦予網站生命
+tags:
+    - 前端
+    - 教學
+    - 筆記
+    - Javascript
 ---
 
 ## 什麼是 JS？
