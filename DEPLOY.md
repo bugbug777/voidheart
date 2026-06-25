@@ -15,9 +15,9 @@ Void Heart 是 Astro 靜態網站，正式網站透過 GitHub Actions 部署到 
 
 - 部署平台：GitHub Pages。
 - 部署方式：GitHub Actions。
-- 網址型態：GitHub Pages 專案頁。
-- 預設網址格式：`https://<github-owner>.github.io/<repository-name>/`。
-- 目前暫不使用自訂網域，自訂網域設定留待之後處理。
+- 網址型態：自訂網域。
+- 正式網址：`https://www.voidheart.cc/`。
+- GitHub Pages custom domain：`www.voidheart.cc`。
 - 正式發布內容：`draft: false` 的 Markdown / MDX 文章。
 
 目前 workflow 會在以下情況部署：
@@ -41,20 +41,20 @@ Void Heart 是 Astro 靜態網站，正式網站透過 GitHub Actions 部署到 
 `astro.config.mjs` 會讀取 `SITE_URL` 與 `BASE_PATH`：
 
 ```js
-const site = process.env.SITE_URL ?? "https://bugbug777.github.io";
-const base = process.env.BASE_PATH ?? "/voidheart";
+const site = process.env.SITE_URL ?? "https://www.voidheart.cc";
+const base = process.env.BASE_PATH ?? "/";
 ```
 
-在 GitHub Pages 專案頁模式中：
+在目前自訂網域模式中：
 
-- `SITE_URL` 應是 GitHub Pages owner 網址，例如 `https://<github-owner>.github.io`。
-- `BASE_PATH` 應是 repository 名稱前面加 `/`，例如 `/<repository-name>`。
+- `SITE_URL` 應是正式網域，例如 `https://www.voidheart.cc`。
+- `BASE_PATH` 應是 `/`，讓 CSS、JS、RSS、canonical URL 都從網站根目錄產生。
 
 GitHub Actions build 時會使用 repository variables。若沒有設定，workflow 會退回：
 
 ```text
-SITE_URL=https://<github-owner>.github.io
-BASE_PATH=/<repository-name>
+SITE_URL=https://www.voidheart.cc
+BASE_PATH=/
 ```
 
 也可以在 GitHub repository 明確設定：
@@ -65,11 +65,11 @@ BASE_PATH=/<repository-name>
 4. 切到 `Variables`。
 5. 新增或確認 repository variables：
    - Name：`SITE_URL`
-   - Value：`https://<github-owner>.github.io`
+   - Value：`https://www.voidheart.cc`
    - Name：`BASE_PATH`
-   - Value：`/<repository-name>`
+   - Value：`/`
 
-依目前 GitHub repository 名稱，預設 `BASE_PATH` 是 `/voidheart`。
+若 GitHub repository variables 還保留舊值，例如 `BASE_PATH=/voidheart`，會覆蓋 `astro.config.mjs` 的預設值，導致部署後資源路徑仍然變成 `/voidheart/_astro/...`。
 
 ## 4. 本機部署前檢查
 
@@ -132,7 +132,7 @@ npm run build
 3. 確認最新一次 workflow 成功。
 4. 到 GitHub repository 的 `Settings > Pages` 查看部署網址。
 5. 開啟正式網站確認內容。
-6. 確認網址格式為 `https://<github-owner>.github.io/<repository-name>/`。
+6. 確認網址格式為 `https://www.voidheart.cc/`。
 
 ## 6. 手動重新部署
 
@@ -146,9 +146,7 @@ npm run build
 
 ## 7. 自訂網域設定
 
-目前暫不使用自訂網域。本節留作日後切換自訂網域時使用。
-
-若日後要使用自訂網域，需同步設定 GitHub Pages、DNS、`SITE_URL` 與 `BASE_PATH`。
+自訂網域需同步設定 GitHub Pages、DNS、`SITE_URL` 與 `BASE_PATH`。
 
 GitHub Pages：
 
@@ -164,9 +162,9 @@ DNS：
 
 專案設定：
 
-- 將 repository variable `SITE_URL` 設為自訂網域，例如 `https://example.com`。
+- 將 repository variable `SITE_URL` 設為自訂網域，例如 `https://www.voidheart.cc`。
 - 將 repository variable `BASE_PATH` 設為 `/`，讓 Astro `base` 回到網站根目錄。
-- 若專案需要保留 `CNAME`，建議放在 `public/CNAME`，內容只填網域本身，例如 `example.com`。
+- 若專案需要保留 `CNAME`，建議放在 `public/CNAME`，內容只填網域本身，例如 `www.voidheart.cc`。
 
 若日後更換網域，需同步更新：
 
@@ -230,13 +228,30 @@ Get Pages site failed. Please verify that the repository has Pages enabled and c
 
 檢查：
 
-- repository variable `SITE_URL` 是否設定為 `https://<github-owner>.github.io`。
-- repository variable `BASE_PATH` 是否設定為 `/<repository-name>`。
-- GitHub Pages 部署網址是否為 `https://<github-owner>.github.io/<repository-name>/`。
-- 若日後改用自訂網域，自訂網域是否包含 `https://`。
-- 若日後改用自訂網域，GitHub Pages 的 custom domain 是否與 `SITE_URL` 一致。
+- repository variable `SITE_URL` 是否設定為 `https://www.voidheart.cc`。
+- repository variable `BASE_PATH` 是否設定為 `/`。
+- GitHub Pages 部署網址是否為 `https://www.voidheart.cc/`。
+- 自訂網域是否包含 `https://`。
+- GitHub Pages 的 custom domain 是否與 `SITE_URL` 一致。
+- 若頁面仍出現 `/voidheart/`，檢查 GitHub repository variables 是否仍有 `BASE_PATH=/voidheart`。
 
-### 8.6 自訂網域無法開啟
+### 8.6 自訂網域樣式消失
+
+若頁面內容出現但樣式消失，通常是 CSS 路徑仍帶有舊的 GitHub Pages 專案路徑。
+
+檢查瀏覽器開發者工具中的 `<link rel="stylesheet">`：
+
+- 正確：`/_astro/...css`
+- 錯誤：`/voidheart/_astro/...css`
+
+處理方式：
+
+1. 確認 `astro.config.mjs` 的 `base` 是 `/`。
+2. 確認 GitHub repository variable `BASE_PATH` 是 `/`，或刪除舊的 `BASE_PATH=/voidheart`。
+3. 確認 workflow 的 fallback `BASE_PATH` 是 `/`。
+4. 重新執行 GitHub Actions 部署。
+
+### 8.7 自訂網域無法開啟
 
 檢查：
 
@@ -246,7 +261,7 @@ Get Pages site failed. Please verify that the repository has Pages enabled and c
 - `SITE_URL` 是否與正式網域一致。
 - Astro `site` 設定收到的網址是否與網域一致。
 
-### 8.7 草稿文章出現在正式網站
+### 8.8 草稿文章出現在正式網站
 
 檢查文章 frontmatter：
 
