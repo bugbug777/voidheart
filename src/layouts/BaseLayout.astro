@@ -24,6 +24,21 @@ const canonicalUrl = new URL(withBase(withoutBase(Astro.url.pathname)), Astro.si
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <ThemeScript />
+    {
+      SITE.googleAnalyticsId && (
+        <>
+          <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${SITE.googleAnalyticsId}`} />
+          <script is:inline define:vars={{ googleAnalyticsId: SITE.googleAnalyticsId }}>
+            {`
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', googleAnalyticsId);
+            `}
+          </script>
+        </>
+      )
+    }
     <title>{pageTitle}</title>
     <meta name="description" content={description} />
     <meta property="og:title" content={pageTitle} />

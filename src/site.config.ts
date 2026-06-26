@@ -3,6 +3,7 @@ export const SITE = {
   author: "sihle",
   description: "sihle 的個人部落格，記錄技術、閱讀、生活與正在形成的想法。",
   locale: "zh-Hant",
+  googleAnalyticsId: "G-CF5Q4KPFW2",
 };
 
 export const NAV_ITEMS = [
