@@ -7,9 +7,7 @@ tags:
     - 筆記
 keywords:
     - HTML
-tableOfContents:
-  minHeadingLevel: 2
-  maxHeadingLevel: 3
+TOC: true
 ---
 
 ## 什麼是 HTML？

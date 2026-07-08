@@ -37,6 +37,7 @@ html {
     ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
     sans-serif;
   letter-spacing: 0;
+  scroll-behavior: smooth;
 }
 
 body {
@@ -88,9 +89,34 @@ textarea {
   margin: 0 auto;
 }
 
-.content-shell {
+.content-shell,
+.article-shell {
   width: min(100% - 32px, var(--content-width));
   margin: 0 auto;
+}
+
+.article-shell--with-toc {
+  display: grid;
+  width: min(100% - 32px, var(--wide-width));
+  grid-template-columns: minmax(190px, 240px) minmax(0, var(--content-width));
+  gap: 44px;
+  align-items: start;
+}
+
+.article-main {
+  min-width: 0;
+}
+
+.article-toc {
+  position: sticky;
+  top: 96px;
+  max-height: calc(100vh - 120px);
+  overflow: auto;
+  padding-top: 8px;
+}
+
+.article-toc-mobile {
+  display: none;
 }
 
 .site-header {
@@ -354,6 +380,51 @@ textarea {
   line-height: 1.8;
 }
 
+.toc {
+  border: 1px solid var(--border);
+  background: color-mix(in srgb, var(--panel) 84%, transparent);
+  padding: 18px;
+}
+
+.toc__title {
+  margin: 0 0 14px;
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.toc__list {
+  display: grid;
+  gap: 9px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.toc__item {
+  font-size: 0.92rem;
+  line-height: 1.45;
+}
+
+.toc__item--depth-3 {
+  padding-left: 14px;
+  font-size: 0.86rem;
+}
+
+.toc a {
+  color: var(--muted);
+  text-decoration: none;
+}
+
+.toc a:hover {
+  color: var(--text);
+  text-decoration: underline;
+  text-decoration-thickness: 0.08em;
+  text-underline-offset: 0.22em;
+}
+
 .prose {
   padding-top: 30px;
   font-size: 1.05rem;
@@ -364,6 +435,7 @@ textarea {
 .prose h3 {
   margin: 2.2em 0 0.6em;
   line-height: 1.3;
+  scroll-margin-top: 110px;
 }
 
 .prose p,
@@ -534,6 +606,21 @@ textarea {
 
   .page-main {
     padding-top: 42px;
+  }
+
+  .article-shell,
+  .article-shell--with-toc {
+    display: block;
+    width: min(100% - 32px, var(--content-width));
+  }
+
+  .article-toc {
+    display: none;
+  }
+
+  .article-toc-mobile {
+    display: block;
+    padding-top: 24px;
   }
 
   .youtube-preview {
